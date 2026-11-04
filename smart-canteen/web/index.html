@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart Canteen</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">🍛</span>
+    <div>
+      <h1>Smart Canteen</h1>
+      <p>Order ahead. Skip the queue.</p>
+    </div>
+  </div>
+  <div id="userbar" class="userbar hidden">
+    <span id="who"></span>
+    <span id="wallet" class="pill"></span>
+    <button class="btn ghost" data-act="logout">Logout</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ STUDENT LOGIN / REGISTER ============ -->
+  <section id="view-auth" class="card login">
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-act="authTab" data-mode="login">Login</button>
+      <button class="auth-tab" data-act="authTab" data-mode="register">Create account</button>
+    </div>
+
+    <form id="login-form">
+      <p class="muted">Log in with your mobile number.</p>
+      <div class="row"><input id="login-mobile" type="tel" inputmode="numeric" placeholder="Mobile number" autocomplete="username" required></div>
+      <div class="row"><input id="login-pass" type="password" placeholder="Password" autocomplete="current-password" required></div>
+      <button class="btn primary wide" type="submit">Login</button>
+    </form>
+
+    <form id="register-form" class="hidden">
+      <p class="muted">Students of any college can join. It takes 30 seconds.</p>
+      <div class="row"><input id="reg-name" type="text" placeholder="Your name" autocomplete="name" maxlength="80" required></div>
+      <div class="row"><input id="reg-mobile" type="tel" inputmode="numeric" placeholder="Mobile number (10 digits)" autocomplete="username" required></div>
+      <div class="row">
+        <input id="reg-college" type="text" list="college-list" placeholder="College name" maxlength="120" required>
+        <datalist id="college-list"></datalist>
+      </div>
+      <div class="row"><select id="reg-dept"><option value="">Department (optional)</option></select></div>
+      <div class="row"><input id="reg-pass" type="password" placeholder="Create a password (min 6 characters)" autocomplete="new-password" minlength="6" maxlength="64" required></div>
+      <div class="row"><input id="reg-pass2" type="password" placeholder="Confirm password" autocomplete="new-password" required></div>
+      <button class="btn primary wide" type="submit">Create account</button>
+    </form>
+
+    <p class="muted small">🔒 Your login is saved on this device for 30 days, so you won't need to type it every time.</p>
+    <p class="muted small">Demo student: <button class="chip" data-act="fillDemo">9876543210 / demo123</button></p>
+    <div class="divider"><span>or</span></div>
+    <button class="btn dark wide" data-act="staffLogin">I'm canteen staff →</button>
+  </section>
+
+  <!-- ============ STAFF LOGIN ============ -->
+  <section id="view-stafflogin" class="card login hidden">
+    <h2>Staff login 🔐</h2>
+    <p class="muted">Enter your staff ID and password.</p>
+    <form id="staff-form">
+      <div class="row"><input id="staff-code" type="text" placeholder="Staff ID (e.g. STF001)" autocomplete="off" required></div>
+      <div class="row"><input id="staff-pass" type="password" placeholder="Password" required></div>
+      <button class="btn primary wide" type="submit">Login</button>
+    </form>
+    <div class="divider"><span>or</span></div>
+    <button class="btn dark wide" data-act="authBack">← Back to student login</button>
+  </section>
+
+  <!-- ============ STUDENT ============ -->
+  <section id="view-student" class="hidden">
+    <nav class="tabs" data-group="student">
+      <button class="tab active" data-tab="order">🍽️ Order food</button>
+      <button class="tab" data-tab="favs">♥ Favourites</button>
+      <button class="tab" data-tab="myorders">🧾 My orders</button>
+      <button class="tab" data-tab="wallettab">💳 Wallet</button>
+    </nav>
+
+    <div id="tab-order" class="panel">
+      <div class="layout">
+        <div id="menu"></div>
+        <aside class="card cart">
+          <h3>Your cart</h3>
+          <div id="cart"></div>
+        </aside>
+      </div>
+    </div>
+
+    <div id="tab-favs" class="panel hidden">
+      <div id="favs"></div>
+    </div>
+
+    <div id="tab-myorders" class="panel hidden">
+      <p class="muted small policy">⏱️ Cancel within 5 minutes of ordering to get a full refund. After 5 minutes you can still cancel, but there is no refund.</p>
+      <div id="myorders" class="orders"></div>
+    </div>
+
+    <div id="tab-wallettab" class="panel hidden">
+      <div class="card narrow">
+        <h3>Wallet balance</h3>
+        <p id="wallet-big" class="big"></p>
+        <p class="muted">Add money to pay for your orders.</p>
+        <div class="row">
+          <button class="chip" data-act="topup" data-amt="100">+ ₹100</button>
+          <button class="chip" data-act="topup" data-amt="200">+ ₹200</button>
+          <button class="chip" data-act="topup" data-amt="500">+ ₹500</button>
+        </div>
+        <form id="topup-form" class="row">
+          <input id="topup-amt" type="number" min="1" max="5000" step="1" placeholder="Custom amount" required>
+          <button class="btn primary" type="submit">Add money</button>
+        </form>
+        <p class="muted small">Top-up is simulated in this project (no real payment).</p>
+      </div>
+      <h3 class="section-title">Wallet statement</h3>
+      <div class="card"><div id="statement"></div></div>
+    </div>
+  </section>
+
+  <!-- ============ STAFF ============ -->
+  <section id="view-staff" class="hidden">
+    <nav class="tabs" data-group="staff">
+      <button class="tab active" data-tab="sOrders">📋 Live orders</button>
+      <button class="tab" data-tab="sInventory">📦 Inventory</button>
+      <button class="tab" data-tab="sAddons">💲 Add-on prices</button>
+      <button class="tab" data-tab="sAudit">🛡️ Daily audit log</button>
+      <button class="tab" data-tab="sFeedback">⭐ Feedback</button>
+    </nav>
+
+    <div id="tab-sOrders" class="panel">
+      <p class="muted small policy">Token numbers restart from 1 every day. Old unfinished orders stay on top until they are handled.</p>
+      <div id="staff-orders" class="orders"></div>
+    </div>
+
+    <div id="tab-sInventory" class="panel hidden">
+      <div class="card"><div id="inventory"></div></div>
+    </div>
+
+    <div id="tab-sAddons" class="panel hidden">
+      <div class="card">
+        <h3>Specification (add-on) prices</h3>
+        <p class="muted small">You decide the extra cost for each specification. Students see these prices in their cart. Use 0 for free.</p>
+        <div id="addons-admin"></div>
+        <form id="addon-form" class="row">
+          <input id="addon-name" type="text" placeholder="New add-on (e.g. Extra butter)" maxlength="50" required>
+          <input id="addon-price" type="number" min="0" max="500" step="0.5" placeholder="Price" required>
+          <button class="btn primary" type="submit">Add</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="tab-sAudit" class="panel hidden">
+      <div class="audit-layout">
+        <div class="card days"><h4>Days</h4><div id="audit-days"></div></div>
+        <div class="card"><h4 id="audit-title">Audit log</h4><div id="audit"></div></div>
+      </div>
+    </div>
+
+    <div id="tab-sFeedback" class="panel hidden">
+      <div class="card"><div id="feedback"></div></div>
+    </div>
+  </section>
+
+</main>
+
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
