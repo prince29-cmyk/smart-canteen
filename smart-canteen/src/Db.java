@@ -8,7 +8,7 @@ public class Db {
     static final String URL  = env("DB_URL",
             "jdbc:mysql://localhost:3306/smart_canteen?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Kolkata");
     static final String USER = env("DB_USER", "root");
-    static final String PASS = env("DB_PASS", "root");
+    static final String PASS = env("DB_PASS", "5953758");
     // ---------------------------------------------------------------------------------
 
     static String env(String key, String def) {
